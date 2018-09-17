@@ -1,0 +1,36 @@
+# Source(updated on 03/29/2017): https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql-server-data-type-mappings
+#
+#
+#
+# SQL Server Database Engine type, SqlDbType enumeration
+bigint, BigInt
+binary, Binary
+bit, Bit
+char, Char
+date, Date
+datetime, DateTime
+datetime2, DateTime2
+datetimeoffset, DateTimeOffset
+decimal, Decimal
+float, Float
+image, Image
+int, Int
+money, Money
+nchar, NChar
+ntext, NText
+numeric, Decimal
+nvarchar, NVarChar	
+real, Real
+rowversion, Timestamp
+smalldatetime, DateTime
+smallint, SmallInt
+smallmoney, SmallMoney
+sql_variant, Variant 
+text, Text
+time, Time
+timestamp, Timestamp
+tinyint, TinyInt
+uniqueidentifier, UniqueIdentifier	
+varbinary, VarBinary
+varchar, VarChar
+xml, Xml

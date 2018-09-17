@@ -1,0 +1,71 @@
+﻿<Window x:Class="SqlRoutineTestUtility.Presenter"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:vm="clr-namespace:SqlRoutineTestUtility.ViewModel"
+        mc:Ignorable="d"
+        Title="SQL Routine Test Utility" ResizeMode="NoResize" Height="720" Width="1000" FontFamily="Verdana" FontSize="13">
+    <Window.Resources>
+        <vm:SqlRoutineTestUtilityViewModel x:Key="SqlRoutineTestUtilityViewModel" />
+    </Window.Resources>
+    <xctk:BusyIndicator Name="busyIndicator" IsBusy="{Binding IsBusy}" DataContext="{Binding Source={StaticResource SqlRoutineTestUtilityViewModel}}">
+        <xctk:BusyIndicator.BusyContentTemplate>
+            <DataTemplate>
+                <StackPanel MinWidth="700">
+                    <TextBlock Text="{Binding ElementName=busyIndicator, Path=DataContext.BusyContent}" />
+                    <ProgressBar IsIndeterminate="True" Height="30" Margin="0,20,0,20" />
+                    <Button Content="Stop further SQL routine execution once the current operation is finished" Height="30" Width="550" Margin="0,0,0,10" Command="{Binding ElementName=busyIndicator, Path=DataContext.CancelCommand}" />
+                </StackPanel>
+            </DataTemplate>
+        </xctk:BusyIndicator.BusyContentTemplate>
+        <xctk:BusyIndicator.ProgressBarStyle>
+            <Style TargetType="ProgressBar">
+                <Setter Property="Visibility" Value="Collapsed" />
+            </Style>
+        </xctk:BusyIndicator.ProgressBarStyle>
+        <Border Padding="30" Background="Azure">
+            <StackPanel Background="Azure">
+                <Label Content="SQL query to get a set of input parameters for SQL routines : " Height="30" />
+                <TextBox Height="330" HorizontalAlignment="Stretch" TextWrapping="Wrap" AcceptsTab="True" AcceptsReturn="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Text="{Binding QueryToGetInputParameters, Mode=TwoWay}" />
+                <Label Content="SQL routine type : " VerticalContentAlignment="Center" Margin ="0,20,0,0" />
+                <StackPanel>
+                    <StackPanel.Resources>
+                        <vm:EnumToBooleanConverter x:Key="RadioButtonValueConverter" />
+                    </StackPanel.Resources>
+                    <StackPanel Margin="30,0,0,0">
+                        <DockPanel>
+                            <RadioButton GroupName="SqlRoutineTypeGroup" Content="Stored Procedure" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="30"
+                                     IsChecked="{Binding Path=SelectedSqlRoutineType, Converter={StaticResource RadioButtonValueConverter}, ConverterParameter={x:Static vm:SqlRoutineType.StoredProcedure}}" />
+                            <WrapPanel VerticalAlignment="Center" HorizontalAlignment="Right">
+                                <Label Content="Compare Output Parameters ? "/>
+                                <CheckBox IsThreeState="False" IsChecked="{Binding Path=IsComparingOutputParameters, Mode=TwoWay}" VerticalContentAlignment="Center" />
+                            </WrapPanel>
+                        </DockPanel>
+                        <RadioButton GroupName="SqlRoutineTypeGroup" Content="Table-Valued Function" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="30"
+                                     IsChecked="{Binding Path=SelectedSqlRoutineType, Converter={StaticResource RadioButtonValueConverter}, ConverterParameter={x:Static vm:SqlRoutineType.TableValuedFunction}}" />
+                        <RadioButton GroupName="SqlRoutineTypeGroup" Content="Scalar-Valued Function" VerticalAlignment="Center" VerticalContentAlignment="Center" Height="30"
+                                     IsChecked="{Binding Path=SelectedSqlRoutineType, Converter={StaticResource RadioButtonValueConverter}, ConverterParameter={x:Static vm:SqlRoutineType.ScalarValuedFunction}}" />
+                    </StackPanel>
+                </StackPanel>
+                <DockPanel Height="30" Margin="0,10,0,0">
+                    <Label Content="SQL routine #1 : " Width="300" />
+                    <TextBox VerticalContentAlignment="Center" Height="20" Width="100" Text="{Binding FirstSchemaName, Mode=TwoWay}" />
+                    <Label Content="." Width="15" VerticalContentAlignment="Bottom" />
+                    <TextBox VerticalContentAlignment="Center" Height="20" Width="Auto" Text="{Binding FirstSqlRoutineName, Mode=TwoWay}" />
+                </DockPanel>
+                <DockPanel Height="30">
+                    <Label Content="SQL routine #2 : " Width="300" />
+                    <TextBox VerticalContentAlignment="Center" Height="20" Width="100" Text="{Binding SecondSchemaName, Mode=TwoWay}" />
+                    <Label Content="." Width="15" VerticalContentAlignment="Bottom" />
+                    <TextBox VerticalContentAlignment="Center" Height="20" Width="Auto" Text="{Binding SecondSqlRoutineName, Mode=TwoWay}" />
+                </DockPanel>
+                <DockPanel Height="30" Margin="0,20,0,0">
+                    <Button Content="Reset TextBox inputs" Width="150" HorizontalAlignment="Left" Command="{Binding ResetInputsCommand}" />
+                    <Button Content="Execute the 2 specified SQL routines, and compare the results" Width="450" HorizontalAlignment="Right" Command="{Binding CompareCommand}" />
+                </DockPanel>
+            </StackPanel>
+        </Border>
+    </xctk:BusyIndicator>
+</Window>
